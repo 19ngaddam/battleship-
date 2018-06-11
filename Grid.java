@@ -1,6 +1,3 @@
-
-
-
 public class Grid {
 
 	private Point[][] grid;
@@ -91,7 +88,7 @@ public class Grid {
 	public boolean checkHit(int x, int y) throws Exception{
 
 
-		attack(x,y);
+	
 
 		return grid[x][y].getHit();
 
