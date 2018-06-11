@@ -47,6 +47,7 @@ public class Board extends GBFrame{
 
 				}
 			}
+			
 		}
 
 	}
@@ -74,6 +75,4 @@ public class Board extends GBFrame{
 	}
 
 }
-
-
 
