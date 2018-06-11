@@ -40,6 +40,12 @@ public class Player {
 		return playerboard;
 	}
 	
-	
+	public Ship getShip(int s) throws Exception{
+		if(s<0 ||s>4){
+			throw new Exception("Ship index invalid");
+		}
+		return ships[s];
+		
+	}
 	
 }
