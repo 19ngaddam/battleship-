@@ -1,8 +1,6 @@
-
-
 import java.util.*;
 
-public class Computer extends Grid{
+public class Computer {
 	Grid compboard;
 	Ship[] ships; 
 
