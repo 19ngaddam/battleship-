@@ -1,0 +1,42 @@
+import BreezySwing.*;
+import javax.swing.*;
+public class PlaceShipsBox extends GBFrame {
+
+	private IntegerField row1Coordinate;
+	private IntegerField col1Coordinate;
+	private IntegerField row2Coordinate;
+	private IntegerField col2Coordinate;
+	private JLabel row1;
+	private JLabel col1;
+	private JLabel row2;
+	private JLabel col2;
+	private JButton done;
+	private int shipSize;
+	private int shipNum;
+	Player p;
+	public PlaceShipsBox(Player p, int shipNum){
+		this.p = p;
+		this.shipNum = shipNum;
+		row1 = addLabel("Row 1: ", 1, 1, 1, 1);
+		col1 = addLabel("Col 1: ", 2, 1, 1, 1);
+
+		row2 = addLabel("Row 2: ", 3, 1, 1, 1);
+		col2 = addLabel("Col 2: ", 4, 1, 1, 1);
+		
+		row1Coordinate = addIntegerField(0, 1, 2, 1, 1);
+		col1Coordinate = addIntegerField(0, 2, 2, 1, 1);
+		row2Coordinate = addIntegerField(0, 3, 2, 1, 1);
+		col2Coordinate = addIntegerField(0, 4, 2, 1, 1);
+		done = addButton("Done", 3, 1, 2, 2);
+		
+	}
+	public void buttonClicked(JButton b){
+		if(b == done);
+			try{
+				p.getGrid().placeShip(row1Coordinate.getNumber(), col1Coordinate.getNumber(), row2Coordinate.getNumber(), col2Coordinate.getNumber(), p.getShip(shipNum));		
+				}catch(Exception e){
+					messageBox(e.getMessage());
+				}
+	}
+	
+}
