@@ -14,10 +14,12 @@ import javax.swing.*;
 public class Board extends GBFrame{
 	JButton [][] arrayButtons = new JButton[11][11];
 	static SecondaryGUI sGUI = new SecondaryGUI();
-	static ControlPanel cGUI = new ControlPanel();
+	static ControlPanel cGUI;
+	Player p;
 
 	public Board(){
-
+		p = new Player();
+		cGUI = new ControlPanel(p);
 		for(int i =0; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
 				JButton b = new JButton();
