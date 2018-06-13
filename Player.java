@@ -15,9 +15,9 @@ public class Player {
 
 		for(int i=0; i<5;i++){
 
-			ships[i]=new Ship(i+1);
+			ships[i]=new Ship(i+2);
 		}
-
+		playerboard=new Grid();
 	}
 	
 	
@@ -28,7 +28,7 @@ public class Player {
 		ships[i-1].hitShip();
 		if(ships[i-1].sunk()==true){
 			
-			Board.sGUI.messageBox("Ship has been sunk!");
+			Board.sGUI.messageBox(ships[i-1].getName()+" has been sunk!");
 		}
 		
 		
