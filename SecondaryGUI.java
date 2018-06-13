@@ -8,7 +8,7 @@ public class SecondaryGUI extends GBFrame {
 
 	static JButton [][] arrayButtons = new JButton[11][11];
 	Computer cpu;
-	public SecondaryGUI(){
+	public SecondaryGUI() {
 
 		for(int i =0; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
@@ -25,6 +25,13 @@ public class SecondaryGUI extends GBFrame {
 
 			}
 
+		}
+	
+		try {
+			cpu=new Computer();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			messageBox(e.getMessage());
 		}
 
 
