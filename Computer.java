@@ -4,18 +4,6 @@ public class Computer {
 	Grid compboard;
 	Ship[] ships; 
 
-	public Computer() throws Exception{
-
-
-		ships = new Ship[5];
-
-
-		for(int i=0import java.util.*;
-
-public class Computer {
-	Grid compboard;
-	Ship[] ships; 
-
 	public Computer() throws Exception {
 
 
