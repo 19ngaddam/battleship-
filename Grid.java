@@ -36,7 +36,7 @@ public class Grid {
 
 		if(row1==row2){
 
-			if(Math.abs(column1-column2)!=s.getID()){
+			if(Math.abs(column1-column2)+1!=s.getID()){
 
 
 				throw new Exception(s.getName()+" must be "+ s.getID()+" units long");
@@ -53,7 +53,7 @@ public class Grid {
 
 		}
 		else if(column1==column2){
-			if(Math.abs(row1-row2)!=s.getID()){
+			if(Math.abs(row1-row2)+1!=s.getID()){
 
 
 				throw new Exception(s.getName()+" must be "+ s.getID()+" units long");
