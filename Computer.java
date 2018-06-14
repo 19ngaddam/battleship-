@@ -34,14 +34,14 @@ public class Computer {
 
 	public void placeAllShips() throws Exception{
 
-		int i=0;	
+		int i=4;	
 
-		while(i<5){
+		while(i>=0){
 
 
 			randomPlacement(ships[i]);
 
-			i++;
+			i--;
 
 		}
 	}
@@ -50,19 +50,21 @@ public class Computer {
 		int length=s.getID();
 
 		int dir;
+		//ArrayList<Integer> dir= new ArrayList<Integer>();
+	
 		int xstarting;
 		int ystarting;
 
 		boolean allclear=true;
 		do{
 			allclear=true;
-			dir=(int)Math.round(Math.random()*4);
+			dir=(int)Math.round(Math.random()*3);
 			xstarting=(int) Math.round(Math.random()*9);
 			ystarting=(int)Math.round(Math.random()*9);
 
 
 
-			if(dir==1){
+			if(dir==0){
 
 				if(ystarting-length<0){
 					allclear=false;
@@ -78,7 +80,7 @@ public class Computer {
 					}
 				}
 			}
-			else if(dir==2){
+			else if(dir==1){
 				if(xstarting+length>10){
 					allclear=false;
 				}
@@ -94,7 +96,7 @@ public class Computer {
 				}
 
 			}
-			else if(dir==3){
+			else if(dir==2){
 				if(ystarting+length>10){
 					allclear=false;
 				}
@@ -117,7 +119,7 @@ public class Computer {
 				}
 				else{
 
-					for(int i=xstarting; i<xstarting-length;i--)
+					for(int i=xstarting; i>xstarting-length;i--)
 
 
 						if(compboard.getPoint(i,ystarting).getID()!=0){
@@ -130,14 +132,14 @@ public class Computer {
 
 		}while(allclear==false);
 		
-		if(dir==1){
+		if(dir==0){
 			compboard.placeShip(xstarting, ystarting, xstarting, ystarting-length, s);
 		}
-		else if(dir==2){
+		else if(dir==1){
 
 			compboard.placeShip(xstarting, ystarting, xstarting+length, ystarting, s);
 		}
-		if(dir==3){
+		if(dir==2){
 			compboard.placeShip(xstarting, ystarting, xstarting, ystarting+length, s);
 		}
 		else {
