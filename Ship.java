@@ -40,7 +40,7 @@ public class Player {
 		return playerboard;
 	}
 	
-	public Ship getShip(int s) throws Exception{
+	public Ship getShip(int s){
 	
 		return ships[s];
 		
