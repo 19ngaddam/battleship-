@@ -34,14 +34,14 @@ public class Computer {
 
 	public void placeAllShips() throws Exception{
 
-		int i=4;	
+		int i=0;	
 
-		while(i>=0){
+		while(i<5){
 
 
 			randomPlacement(ships[i]);
 
-			i--;
+			i++;
 
 		}
 	}
@@ -139,7 +139,7 @@ public class Computer {
 
 			compboard.placeShip(xstarting, ystarting, xstarting+length, ystarting, s);
 		}
-		if(dir==2){
+		else if(dir==2){
 			compboard.placeShip(xstarting, ystarting, xstarting, ystarting+length, s);
 		}
 		else {
