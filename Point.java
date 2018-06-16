@@ -1,5 +1,3 @@
-
-
 public class Point {
 
 	
@@ -60,8 +58,12 @@ public class Point {
 
 
 	}
-
-
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
+	}
 	public boolean isGuessed(){
 
 		return isGuessed;
