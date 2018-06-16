@@ -40,12 +40,30 @@ public class Player {
 		return playerboard;
 	}
 	
-	public Ship getShip(int s) throws Exception{
-		if(s<0 ||s>4){
-			throw new Exception("Ship index invalid");
-		}
+	public Ship getShip(int s){
+	
 		return ships[s];
 		
+	}
+	public boolean gg() {
+		
+		
+		boolean gg=true;
+		for(int i=0; i<5;i++) {
+			if(ships[i].sunk()==false) {
+				gg=false;
+			}
+		}
+		return gg;
+		
+	}
+	public boolean testSunk(int x, int y) {
+		
+		
+		
+		
+		int id=playerboard.getPoint(x, y).getID();
+		return ships[id-2].sunk();
 	}
 	
 }
