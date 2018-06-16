@@ -1,49 +1,89 @@
-import BreezySwing.*;
-import javax.swing.*;
-public class Player {
-
-	
-	
-	Grid playerboard;
-	Ship[] ships; 
-
-	public Player() {
+public class Ship {
 
 
-		ships = new Ship[5];
+	private String name;
+
+	private int ID;//serves as ID the ship and the length
 
 
-		for(int i=0; i<5;i++){
 
-			ships[i]=new Ship(i+2);
+
+
+	private int lives;
+
+
+
+
+
+
+
+	public Ship(int id){
+
+		ID=id;
+
+		if(id==2){
+
+			name= "Destroyer";
 		}
-		playerboard=new Grid();
-	}
-	
-	
-	public void attack(int x, int y) throws Exception{
-		
-		playerboard.attack(x, y);
-		int i=playerboard.getPoint(x, y).getID();
-		ships[i-1].hitShip();
-		if(ships[i-1].sunk()==true){
-			
-			Board.sGUI.messageBox(ships[i-1].getName()+" has been sunk!");
+		else if(id==3){
+			name="Submarine";
+
 		}
-		
-		
+
+		else if(id==4){ 
+			name="Battleship";
+		}
+		else if(id==5){ 
+			name="Carrier";
+		}
+		else if(id==6){
+			name="Ultimate Patrol Boat";
+
+
+		}
+
+
+
+		lives=ID;
 	}
-	 
-	
-	
-	public Grid getGrid(){
-		return playerboard;
+
+	public String getName(){
+
+
+
+		return name;
 	}
-	
-	public Ship getShip(int s){
-	
-		return ships[s];
-		
+
+	public boolean sunk(){
+
+		if (lives<=0)
+
+			return true;
+
+		else
+			return false;
+
 	}
-	
+
+	public void hitShip(){
+
+
+		lives--;
+
+	}
+	public int getID(){
+
+		return ID;
+
+
+	}
+
+	public int getlives(){
+		return lives;
+
+	}
+
+
+
+
 }
