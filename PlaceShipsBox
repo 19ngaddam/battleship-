@@ -19,9 +19,9 @@ public class PlaceShipsBox extends GBFrame {
 	private int shipNum;
 	Player p;
 	private int[][] points;
-	JButton [][] arrayButtons;
-	public PlaceShipsBox(Player p, int shipNum, JButton [][] arrayButtons){
-		this.arrayButtons = arrayButtons;
+
+	public PlaceShipsBox(Player p, int shipNum){
+		
 		this.p = p;
 		this.shipNum = shipNum;
 		row1 = addLabel("Row 1: ", 1, 1, 1, 1);
@@ -42,23 +42,22 @@ public class PlaceShipsBox extends GBFrame {
 		
 	}
 	public void buttonClicked(JButton b){
+		
+		
 		if(b == done);
-			try{
-				points = p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row2Coordinate.getNumber()-1, col2Coordinate.getNumber()-1, new Ship(shipNum));
-				
-				for(int i = 0; i < points.length; i ++){
-					for(int j = 0; j < points[i].length; j++){
-						System.out.println(i + "" + j);
-					}
-				}
-					
-				
+			
+				try {
+					p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row2Coordinate.getNumber()-1, col2Coordinate.getNumber()-1, new Ship(shipNum));
 
-				this.dispose();
-				}catch(Exception e){
+				
+				} catch (Exception e) {
 					e.printStackTrace();
 					messageBox(e.getMessage());
 				}
+				
+
+				this.dispose();
+
 	}
 	
 	public int[][] getPoints(){
