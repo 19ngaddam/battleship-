@@ -16,8 +16,8 @@ public class Computer {
 		}
 		compboard=new Grid();
 
-	
-		
+
+
 		placeAllShips();
 
 
@@ -50,111 +50,143 @@ public class Computer {
 		int length=s.getID();
 
 		int dir;
-		//ArrayList<Integer> dir= new ArrayList<Integer>();
-	
+		int sauce;
 		int xstarting;
 		int ystarting;
 
 		boolean allclear=true;
 		do{
 			allclear=true;
-			dir=(int)Math.round(Math.random()*3);
+			
 			xstarting=(int) Math.round(Math.random()*9);
 			ystarting=(int)Math.round(Math.random()*9);
 
+			dir=((int)Math.round(Math.random()*3));
+			sauce=dir;
+			int count=0;
+			do{
+				dir=(sauce+count)%4;
+				count++;
+				allclear=true;
+			
+				if(dir==0){
+
+					if(ystarting-length+1<0){
+						allclear=false;
+					
+					}
+					else{
+
+						for(int i=ystarting; i>=ystarting-length+1;i--){
 
 
-			if(dir==0){
-
-				if(ystarting-length<0){
-					allclear=false;
-				}
-				else{
-
-					for(int i=ystarting; i>ystarting-length;i--){
-
-
-						if(compboard.getPoint(xstarting,i).getID()!=0){
-							allclear=false;
+							if(compboard.getPoint(xstarting,i).getID()!=0){
+								allclear=false;
+							
+							}
 						}
 					}
 				}
-			}
-			else if(dir==1){
-				if(xstarting+length>10){
-					allclear=false;
+				else if(dir==1){
+					if(xstarting+length-1>=10){
+						allclear=false;
+						
+					}
+					else{
+
+						for(int i=xstarting; i<=xstarting+length-1;i++)
+
+
+							if(compboard.getPoint(i,ystarting).getID()!=0){
+								allclear=false;
+							}
+
+					}
+
 				}
-				else{
+				else if(dir==2){
+					if(ystarting+length-1>=10){
+						allclear=false;
+					}
+					else{
 
-					for(int i=xstarting; i<xstarting+length;i++)
-
-
-						if(compboard.getPoint(i,ystarting).getID()!=0){
-							allclear=false;
-						}
-
-				}
-
-			}
-			else if(dir==2){
-				if(ystarting+length>10){
-					allclear=false;
-				}
-				else{
-
-					for(int i=ystarting; i<ystarting+length;i++){
+						for(int i=ystarting; i<=ystarting+length-1;i++){
 
 
-						if(compboard.getPoint(xstarting,i).getID()!=0){
-							allclear=false;
+							if(compboard.getPoint(xstarting,i).getID()!=0){
+								allclear=false;
+							}
 						}
 					}
-				}
-				
-				
-			}
-			else{
-				if(xstarting-length<0){
-					allclear=false;
+
+
 				}
 				else{
+					if(xstarting-length+1<0){
+						allclear=false;
+					}
+					else{
 
-					for(int i=xstarting; i>xstarting-length;i--)
+						for(int i=xstarting; i>=xstarting-length+1;i--)
 
 
-						if(compboard.getPoint(i,ystarting).getID()!=0){
-							allclear=false;
-						}
+							if(compboard.getPoint(i,ystarting).getID()!=0){
+								allclear=false;
+							}
 
+					}
 				}
-			}
 
-
+			}while(allclear==false && count<4); 
 		}while(allclear==false);
-		
-		if(dir==0){
-			compboard.placeShip(xstarting, ystarting, xstarting, ystarting-length, s);
+
+		if(dir==0){	
+			compboard.placeShip(xstarting, ystarting, xstarting, ystarting-length+1, s);
 		}
 		else if(dir==1){
-
-			compboard.placeShip(xstarting, ystarting, xstarting+length, ystarting, s);
+			
+			compboard.placeShip(xstarting, ystarting, xstarting+length-1, ystarting, s);
 		}
 		else if(dir==2){
-			compboard.placeShip(xstarting, ystarting, xstarting, ystarting+length, s);
+			compboard.placeShip(xstarting, ystarting, xstarting, ystarting+length-1, s);
 		}
 		else {
 
-			compboard.placeShip(xstarting, ystarting, xstarting-length, ystarting, s);
+			compboard.placeShip(xstarting, ystarting, xstarting-length+1, ystarting, s);
 		}
 	}
 
 
-	
+
 
 	public Grid getGrid(){
 		return compboard;
 	}
 
-
+	public Ship getShip(int s){
+		
+		return ships[s];
+		
+	}
+	public boolean gg() {
+		
+		
+		boolean gg=true;
+		for(int i=0; i<5;i++) {
+			if(ships[i].sunk()==false) {
+				gg=false;
+			}
+		}
+		return gg;
+		
+	}
+	public boolean testSunk(int x, int y) {
+		
+		
+		
+		
+		int id=compboard.getPoint(x, y).getID();
+		return ships[id-2].sunk();
+	}
 
 }
