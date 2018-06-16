@@ -12,7 +12,7 @@ import javax.swing.border.*;
 import javax.swing.*;
 
 public class Board extends GBFrame{
-	JButton [][] arrayButtons = new JButton[11][11];
+	static JButton [][] arrayButtons = new JButton[11][11];
 	static SecondaryGUI sGUI = new SecondaryGUI();
 	static ControlPanel cGUI;
 	Player p;
@@ -20,7 +20,7 @@ public class Board extends GBFrame{
 	public Board(){
 		p = new Player();
 		cGUI = new ControlPanel(p);
-		for(int i =0; i < arrayButtons.length; i++){
+		for(int i =1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
 				JButton b = new JButton();
 
@@ -29,31 +29,57 @@ public class Board extends GBFrame{
 
 				b.setIcon(new ImageIcon("src/img.jpg"));
 
-				b.setBackground(Color.BLUE);
 				arrayButtons[i][j] = b;
+
 			}
 		}
 
 	}
 
+	/*	public static void displayShips(int row1, int column1, int row2, int column2) {
+
+		if(row1==row2){
+
+
+			for(int i=Math.min(column1, column2);i<=Math.max(column1, column2);i++){
+
+				arrayButtons[row1][i].setBackground(Color.BLACK);
+
+			}
 
 
 
-	public void buttonClicked(JButton buttonObj){
-		for(int i = 0; i < arrayButtons.length; i++){
-			for(int j = 0; j < arrayButtons[i].length; j++){
-				if(buttonObj == arrayButtons[i][j]){
+		}
+		else if(column1==column2){
 
-					arrayButtons[i][j].setIcon(new ImageIcon("src/img2.jpg"));
-					sGUI.getGuess(i, j);
 
+			for(int i=Math.min(row1, row2);i<=Math.max(row1, row2);i++){
+
+				arrayButtons[i][column1].setBackground(Color.BLACK);
+
+			}
+
+
+
+		}
+
+
+
+
+
+	}*/
+
+	public void buttonClicked(JButton b) {
+		for(int i =1; i < arrayButtons.length; i++){
+			for(int j = 1; j < arrayButtons[0].length; j++){
+				if(p.getGrid().getPoint(i-1, j-1).getHit() && b == arrayButtons[i][j]) {
+					arrayButtons[i][j].setBackground(Color.red);
+				}
 				}
 			}
-			
-		}
-
 	}
 
+	
 
 	/**
 	 * Main Method
@@ -77,4 +103,3 @@ public class Board extends GBFrame{
 	}
 
 }
-
