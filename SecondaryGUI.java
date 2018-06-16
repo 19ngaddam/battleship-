@@ -10,7 +10,7 @@ public class SecondaryGUI extends GBFrame {
 	Computer cpu;
 	public SecondaryGUI() {
 
-		for(int i =0; i < arrayButtons.length; i++){
+		for(int i = 1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
 				JButton b = new JButton();
 
@@ -31,6 +31,7 @@ public class SecondaryGUI extends GBFrame {
 			cpu=new Computer();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			messageBox(e.getMessage());
 		}
 
@@ -50,19 +51,28 @@ public class SecondaryGUI extends GBFrame {
 
 
 					try {
-						cpu.getGrid().attack(i, j);
+						cpu.getGrid().attack(i-1, j-1);
 					
 				
-						if(cpu.getGrid().checkHit(i, j)){
+						if(cpu.getGrid().checkHit(i-1, j-1)){
+							//messageBox(""+cpu.getGrid().getPoint(i-1, j-1).getID());
 							temp.setBackground(Color.RED);
-
-
+							cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()-2).hitShip();
+							if(cpu.testSunk(i-1,j-1)) {
+								messageBox(cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()-2).getName()+" has been sunk.");
+								if(cpu.gg()) {
+									
+									messageBox("You have won!! Victory Royale!!");
+									System.exit(0);
+								}
+							}
 						}
 						else{
 							temp.setBackground(Color.WHITE);
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
+						e.printStackTrace();
 						messageBox(e.getMessage());
 					}
 					
@@ -83,15 +93,6 @@ public class SecondaryGUI extends GBFrame {
 	}
 
 
-	public void getGuess(int i, int j){
-
-		arrayButtons[i][j].setBackground(Color.GRAY);
-
-
-
-
-
-	}
 
 
 
