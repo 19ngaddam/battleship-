@@ -36,14 +36,14 @@ public class Grid {
 
 		if(row1==row2){
 
-			if(Math.abs(column1-column2)+1!=s.getID()){
+			if(((Math.abs(column1-column2)+1)!=s.getID())){
 
 
 				throw new Exception(s.getName()+" must be "+ s.getID()+" units long");
 
 			}
 
-			for(int i=Math.min(column1, column2);i<Math.max(column1, column2);i++){
+			for(int i=Math.min(column1, column2);i<=Math.max(column1, column2);i++){
 
 				grid[row1][i].addShip(s.getID());
 
@@ -53,6 +53,7 @@ public class Grid {
 
 		}
 		else if(column1==column2){
+
 			if(Math.abs(row1-row2)+1!=s.getID()){
 
 
@@ -60,7 +61,7 @@ public class Grid {
 
 			}
 
-			for(int i=Math.min(row1, row2);i<Math.max(row1, row2);i++){
+			for(int i=Math.min(row1, row2);i<=Math.max(row1, row2);i++){
 
 				grid[i][column1].addShip(s.getID());
 			}
@@ -85,15 +86,38 @@ public class Grid {
 
 
 
-	public boolean checkHit(int x, int y) throws Exception{
+	public boolean checkHit(int x, int y){
 
 
-	
+
 
 		return grid[x][y].getHit();
 
 
 
+	}
+
+	public boolean checkHit(Point p) {
+
+
+		int x=p.getX();
+		int y=p.getY();
+
+		return grid[x][y].getHit();
+
+
+
+	}
+	public boolean checkGuessed(Point p) {
+
+		int x=p.getX();
+		int y=p.getY();
+
+		return grid[x][y].isGuessed();
+		
+		
+		
+		
 	}
 	public void attack(int x, int y) throws Exception{
 
