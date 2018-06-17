@@ -57,9 +57,9 @@ public class SecondaryGUI extends GBFrame {
 						if(cpu.getGrid().checkHit(i-1, j-1)){
 							//messageBox(""+cpu.getGrid().getPoint(i-1, j-1).getID());
 							temp.setBackground(Color.RED);
-							cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()-2).hitShip();
+							cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()).hitShip();
 							if(cpu.testSunk(i-1,j-1)) {
-								messageBox(cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()-2).getName()+" has been sunk.");
+								messageBox("You have sunk the enemy's " + cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()).getName());
 								if(cpu.gg()) {
 									
 									messageBox("You have won!! Victory Royale!!");
@@ -70,6 +70,7 @@ public class SecondaryGUI extends GBFrame {
 						else{
 							temp.setBackground(Color.WHITE);
 						}
+						Board.guess();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
