@@ -14,11 +14,11 @@ public class PlaceShipsGUI extends GBFrame {
 	
 	public PlaceShipsGUI(Player p){
 		this.p = p;
-		place2 = addButton("Place Patrol Boat", 1, 1, 1, 1);
-		place3 = addButton("Place Submarine", 2, 1, 1, 1);
-		place4 = addButton("Place Battleship", 3, 1, 1, 1);
-		place5 = addButton("Place Carrier", 4, 1, 1, 1);
-		place6 = addButton("Place Ultimate PatrolBoat", 5, 1, 1, 1);
+		place2 = addButton("Place Destroyer (2)", 1, 1, 1, 1);
+		place3 = addButton("Place Submarine (3)", 2, 1, 1, 1);
+		place4 = addButton("Place Battleship (4)", 3, 1, 1, 1);
+		place5 = addButton("Place Carrier (5)", 4, 1, 1, 1);
+		place6 = addButton("Place Ultimate PatrolBoat (6)", 5, 1, 1, 1);
 		done = addButton("Done", 6, 1, 2, 2);
 		
 		this.setSize(500, 500);
@@ -28,29 +28,33 @@ public class PlaceShipsGUI extends GBFrame {
 	
 	public void buttonClicked(JButton b){
 		if (b == place2){
-			PlaceShipsBox box = new PlaceShipsBox(p, 2);
+			PlaceShipsBox box = new PlaceShipsBox(this,p, 2);
 			box.setVisible(true);
 			place2.setEnabled(false);
 		}
 		if (b == place3){
-			PlaceShipsBox box = new PlaceShipsBox(p, 3);
-			place3.setEnabled(false);
+			PlaceShipsBox box = new PlaceShipsBox(this,p, 3);
+			
 			box.setVisible(true);
+			place3.setEnabled(false);
 		}
 		if (b == place4){
-			PlaceShipsBox box = new PlaceShipsBox(p, 4);
-			place4.setEnabled(false);
+			PlaceShipsBox box = new PlaceShipsBox(this,p, 4);
+			
 			box.setVisible(true);
+			place4.setEnabled(false);
 		}
 		if (b == place5){
-			PlaceShipsBox box = new PlaceShipsBox(p, 5);
-			place5.setEnabled(false);
+			PlaceShipsBox box = new PlaceShipsBox(this,p, 5);
+		
 			box.setVisible(true);
+			place5.setEnabled(false);
 		}
 		if (b == place6){
-			PlaceShipsBox box = new PlaceShipsBox(p, 6);
-			place6.setEnabled(false);
+			PlaceShipsBox box = new PlaceShipsBox(this,p, 6);
+			
 			box.setVisible(true);
+			place6.setEnabled(false);
 		}
 		
 		if(b == done){
@@ -60,5 +64,11 @@ public class PlaceShipsGUI extends GBFrame {
 				this.dispose();
 			}
 		}
+	}
+	
+	
+	
+	public Player getPlayer() {
+		return p;
 	}
 }
