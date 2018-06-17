@@ -9,7 +9,13 @@ public class PlaceShipsGUI extends GBFrame {
 	private JButton place6;
 	private JButton done;
 	
-	
+	  ButtonGroup difficulty = new ButtonGroup();              // Radio button group
+
+	    JRadioButton dif1;// Radio buttons 
+
+	    JRadioButton dif2;  
+
+	    JRadioButton dif3;
 	Player p;
 	
 	public PlaceShipsGUI(Player p){
@@ -19,8 +25,14 @@ public class PlaceShipsGUI extends GBFrame {
 		place4 = addButton("Place Battleship (4)", 3, 1, 1, 1);
 		place5 = addButton("Place Carrier (5)", 4, 1, 1, 1);
 		place6 = addButton("Place Ultimate PatrolBoat (6)", 5, 1, 1, 1);
-		done = addButton("Done", 6, 1, 2, 2);
-		
+		done = addButton("Play", 6, 1, 2, 2);
+		dif1 = addRadioButton ("Easy", 1,3,1,1); 
+		dif2 = addRadioButton ("Medium ", 2,3,1,1); 
+		dif3 = addRadioButton ("Impossible", 3,3,1,1); 
+		dif1.setSelected(true);
+		difficulty.add(dif1);
+		difficulty.add(dif2);
+		difficulty.add(dif3);
 		this.setSize(500, 500);
 		this.setLocation(700, 100);
 		this.setVisible(true);
@@ -29,31 +41,30 @@ public class PlaceShipsGUI extends GBFrame {
 	public void buttonClicked(JButton b){
 		if (b == place2){
 			PlaceShipsBox box = new PlaceShipsBox(this,p, 2);
-			box.setVisible(true);
+			p=box.getPlayer();
 			place2.setEnabled(false);
 		}
 		if (b == place3){
 			PlaceShipsBox box = new PlaceShipsBox(this,p, 3);
-			
-			box.setVisible(true);
+			p=box.getPlayer();
 			place3.setEnabled(false);
 		}
 		if (b == place4){
 			PlaceShipsBox box = new PlaceShipsBox(this,p, 4);
 			
-			box.setVisible(true);
+			p=box.getPlayer();
+		
 			place4.setEnabled(false);
 		}
 		if (b == place5){
 			PlaceShipsBox box = new PlaceShipsBox(this,p, 5);
-		
-			box.setVisible(true);
+			p=box.getPlayer();
+			
 			place5.setEnabled(false);
 		}
 		if (b == place6){
 			PlaceShipsBox box = new PlaceShipsBox(this,p, 6);
-			
-			box.setVisible(true);
+			p=box.getPlayer();
 			place6.setEnabled(false);
 		}
 		
@@ -61,6 +72,15 @@ public class PlaceShipsGUI extends GBFrame {
 			if(place2.isEnabled() || place3.isEnabled() || place4.isEnabled() || place5.isEnabled() || place6.isEnabled()){
 				messageBox("You have not placed all the ships!!");
 			}else{
+				if(dif1.isSelected()) {
+				Board.setTargeting(1,p);
+				}
+				if(dif2.isSelected()) {
+					Board.setTargeting(2,p);
+					}
+				if(dif3.isSelected()) {
+					Board.setTargeting(3,p);
+					}
 				this.dispose();
 			}
 		}
