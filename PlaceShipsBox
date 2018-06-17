@@ -4,41 +4,69 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
-public class PlaceShipsBox extends GBFrame {
+public class PlaceShipsBox extends GBDialog {
 
 	private IntegerField row1Coordinate;
 	private IntegerField col1Coordinate;
-	private IntegerField row2Coordinate;
-	private IntegerField col2Coordinate;
+	private JLabel start;
 	private JLabel row1;
 	private JLabel col1;
+	
+	  ButtonGroup direction = new ButtonGroup();              // Radio button group
+
+	    JRadioButton up;// Radio buttons 
+
+	    JRadioButton down;  
+
+	    JRadioButton left;
+	    JRadioButton right;
+	private JButton done;
+	
+	
+/*	private IntegerField row2Coordinate;
+	private IntegerField col2Coordinate;
+	
 	private JLabel row2;
 	private JLabel col2;
-	private JButton done;
-	private int shipSize;
+
+	private int shipSize;*/
 	private int shipNum;
 	Player p;
+	Player rollback;
 	private int[][] points;
-	PlaceShipsGUI g;
 
-	public PlaceShipsBox(PlaceShipsGUI g, Player p, int shipNum){
-		this.g=g;
+	public PlaceShipsBox(JFrame parent, Player p, int shipNum){
+		super(parent);
 		this.p = p;
+		rollback= p;
 		this.shipNum = shipNum;
-		row1 = addLabel("Row 1: ", 1, 1, 1, 1);
-		col1 = addLabel("Col 1: ", 2, 1, 1, 1);
+		start=addLabel("Enter Starting Coordinate", 1, 1, 1, 1);
+		row1 = addLabel("Row 1: ", 2, 1, 1, 1);
+		col1 = addLabel("Col 1: ", 3, 1, 1, 1);
 
-		row2 = addLabel("Row 2: ", 3, 1, 1, 1);
-		col2 = addLabel("Col 2: ", 4, 1, 1, 1);
+	//	row2 = addLabel("Row 2: ", 3, 1, 1, 1);
+	//	col2 = addLabel("Col 2: ", 4, 1, 1, 1);
 		
-		row1Coordinate = addIntegerField(0, 1, 2, 1, 1);
-		col1Coordinate = addIntegerField(0, 2, 2, 1, 1);
-		row2Coordinate = addIntegerField(0, 3, 2, 1, 1);
-		col2Coordinate = addIntegerField(0, 4, 2, 1, 1);
-		done = addButton("Done", 5, 1, 2, 2);
-		
+		row1Coordinate = addIntegerField(0, 2, 2, 1, 1);
+		col1Coordinate = addIntegerField(0, 3, 2, 1, 1);
+	//	row2Coordinate = addIntegerField(0, 3, 2, 1, 1);
+	//	col2Coordinate = addIntegerField(0, 4, 2, 1, 1);
+		up = addRadioButton ("Up", 2,3,1,1); 
+		down = addRadioButton ("Down", 3,3,1,1); 
+		left = addRadioButton ("Left", 4,3,1,1); 
+		right = addRadioButton ("Right", 5,3,1,1); 
+		direction.add(up);
+		direction.add(down);
+		direction.add(left);
+		direction.add(right);
+		up.setSelected(true);
+		done = addButton("Done", 6, 1, 2, 2);
+		this.setTitle("Place Ship Length " +shipNum);
 		this.setSize(300, 300);
 		this.setLocation(700, 300);
+		row1Coordinate.setText("");
+		col1Coordinate.setText("");
+		row1Coordinate.requestFocus();
 		setVisible(true);
 		
 	}
@@ -46,55 +74,50 @@ public class PlaceShipsBox extends GBFrame {
 		
 		
 		if(b == done);
+			
 				try {
-					// .... check placement exception
-					p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row2Coordinate.getNumber()-1, col2Coordinate.getNumber()-1, new Ship(shipNum));
-	
-
-					// START
-					// Update grid background color for placed ships
-/*					if(row1Coordinate == row2Coordinate) {
-						for(int i = col1Coordinate.getNumber()-1; i < col2Coordinate.getNumber()-1; i++) {
-							System.out.println("Inside if, for loop ");
-
-							Board.arrayButtons[row1Coordinate.getNumber()-1][i].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
-						}
+					
+					
+					
+					
+					if(up.isSelected()) {
 						
-					}else {
-						for(int i = row1Coordinate.getNumber()-1; i < row2Coordinate.getNumber()-1; i++) {
-							System.out.println("Inside else, for loop ");
-
-							Board.arrayButtons[i][col1Coordinate.getNumber()-1].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
-						}
+						
+					p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row1Coordinate.getNumber()-shipNum, col1Coordinate.getNumber()-1, new Ship(shipNum));
 					}
-*/					// END
-					
-					int rowStart = row1Coordinate.getNumber()-1;
-					int colStart = col1Coordinate.getNumber()-1;
-					int rowEnd = row2Coordinate.getNumber();
-					int colEnd = col2Coordinate.getNumber();
-					
-					
-					for (int i = rowStart; i < rowEnd; i++) {
-						for (int j = colStart; j < colEnd; j++) {
-							
-							Board.arrayButtons[i+1][j+1].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
+					if(down.isSelected()) {
+						p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row1Coordinate.getNumber()+shipNum-2, col1Coordinate.getNumber()-1, new Ship(shipNum));
 						}
-					}			
+					if(left.isSelected()) {
+						p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-shipNum, new Ship(shipNum));
+						}
+					if(right.isSelected()) {
+						p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row1Coordinate.getNumber()-1, col1Coordinate.getNumber()+shipNum-2, new Ship(shipNum));
+						}
+					Board.updateGUI(p);
+					setDlgCloseIndicator("Done");
 					this.dispose();
+					
+					
+					
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					messageBox(e.getMessage());
+					p=rollback;
+					
 				}
 				
-
+				
 			
 
 	}
-	
+	public Player getPlayer() {
+		return p;
+	}
 	public int[][] getPoints(){
 		return points;
 	}
-	
 	
 }
