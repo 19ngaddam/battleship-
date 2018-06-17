@@ -15,10 +15,12 @@ public class Board extends GBFrame{
 	static JButton [][] arrayButtons = new JButton[11][11];
 	static SecondaryGUI sGUI = new SecondaryGUI();
 	static ControlPanel cGUI;
-	Player p;
-
+	static Player p;
+	static Targeting t;
+	
 	public Board(){
 		p = new Player();
+	
 		cGUI = new ControlPanel(p);
 		for(int i =1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
@@ -68,18 +70,87 @@ public class Board extends GBFrame{
 
 
 	}*/
-
+	
 	public void buttonClicked(JButton b) {
-		for(int i =1; i < arrayButtons.length; i++){
+		/*for(int i =1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
 				if(p.getGrid().getPoint(i-1, j-1).getHit() && b == arrayButtons[i][j]) {
 					arrayButtons[i][j].setBackground(Color.red);
 				}
 				}
-			}
+			}*/
 	}
-
+	public static void setTargeting(int dif,Player p) {
+		
+		
+		t=new Targeting(dif,p);
+		
+	}
+	public static void guess() {
+		
 	
+		
+		try {
+			p.attack(t.getNext());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		updateGUI(p);
+		
+	}
+	public static void updateGUI(Player player) {
+
+
+		p=player;
+
+		for(int i =1; i < arrayButtons.length; i++){
+			for(int j = 1; j < arrayButtons[0].length; j++){
+				if(p.getGrid().getPoint(i-1, j-1).getID()!=0) {
+					arrayButtons[i][j].setBackground(Color.BLACK);
+					int shipAtPoint =p.getGrid().getPoint(i-1, j-1).getID(); 
+					if(shipAtPoint == 2){
+						arrayButtons[i][j].setIcon(new ImageIcon("src/dest.jpg"));
+
+					}else if(shipAtPoint ==3 ){
+						arrayButtons[i][j].setIcon(new ImageIcon("src/sub.jpg"));
+
+					}else if(shipAtPoint == 4 ){
+						arrayButtons[i][j].setIcon(new ImageIcon("src/batt.jpg"));
+
+					}else if(shipAtPoint == 5 ){
+						arrayButtons[i][j].setIcon(new ImageIcon("src/carr.jpg"));
+
+					}else if(shipAtPoint == 6 ){
+						arrayButtons[i][j].setIcon(new ImageIcon("src/upb.jpg"));
+
+					}else{
+						arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
+					}
+
+
+
+				}
+				if(p.getGrid().getPoint(i-1, j-1).isGuessed()) {
+					arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
+					arrayButtons[i][j].setBackground(Color.WHITE);
+				}
+				if(p.getGrid().getPoint(i-1, j-1).getHit()) {
+					arrayButtons[i][j].setIcon(new ImageIcon("src/img2.jpg"));
+					if(p.gg()) {
+						JOptionPane.showMessageDialog(null,"You have LOST!! Better luck next time!");
+						System.exit(0);
+					}
+
+					
+					}
+
+			}
+		}
+
+
+	}
 
 	/**
 	 * Main Method
