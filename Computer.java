@@ -165,7 +165,7 @@ public class Computer {
 
 	public Ship getShip(int s){
 		
-		return ships[s];
+		return ships[s-2];
 		
 	}
 	public boolean gg() {
