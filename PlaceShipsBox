@@ -19,9 +19,10 @@ public class PlaceShipsBox extends GBFrame {
 	private int shipNum;
 	Player p;
 	private int[][] points;
+	PlaceShipsGUI g;
 
-	public PlaceShipsBox(Player p, int shipNum){
-		
+	public PlaceShipsBox(PlaceShipsGUI g, Player p, int shipNum){
+		this.g=g;
 		this.p = p;
 		this.shipNum = shipNum;
 		row1 = addLabel("Row 1: ", 1, 1, 1, 1);
@@ -48,6 +49,7 @@ public class PlaceShipsBox extends GBFrame {
 				try {
 					// .... check placement exception
 					p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row2Coordinate.getNumber()-1, col2Coordinate.getNumber()-1, new Ship(shipNum));
+	
 
 					// START
 					// Update grid background color for placed ships
@@ -78,19 +80,21 @@ public class PlaceShipsBox extends GBFrame {
 							
 							Board.arrayButtons[i+1][j+1].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
 						}
-					}				
+					}			
+					this.dispose();
 				} catch (Exception e) {
 					e.printStackTrace();
 					messageBox(e.getMessage());
 				}
 				
 
-				this.dispose();
+			
 
 	}
 	
 	public int[][] getPoints(){
 		return points;
 	}
+	
 	
 }
