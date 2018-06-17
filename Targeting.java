@@ -19,8 +19,8 @@ public class Targeting {
 		idtofind=2;
 		P = p;
 		G = p.getGrid();
-		LastPoint = SelectRandom();
-		Penultimate = SelectRandom();
+		LastPoint = getEmptyPoint();
+		Penultimate = getEmptyPoint();
 		difficulty = dif;
 
 		two=stealEverything(2);
@@ -39,9 +39,9 @@ public class Targeting {
 
 		}
 		else if(difficulty == 2){
-			if(G.checkHit(LastPoint)){
-				int id=LastPoint.getID();
-				boolean sunk=P.getShip(id).sunk();
+			if((LastPoint).getID()!=0){
+				System.out.println("Hit");
+				boolean sunk=P.testSunk(LastPoint);
 				if(sunk){
 					Point p = SelectRandom();
 					Penultimate = LastPoint;
@@ -51,58 +51,63 @@ public class Targeting {
 				else{
 					//Check out of bounds exception
 					if(direction == 1){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()+1);
+						Point p = new Point(LastPoint.getX()-1,LastPoint.getY());
 						Penultimate = LastPoint;
 						LastPoint = p;
 						return p;
 					}
 					if(direction == 2){
-						Point p = new Point(LastPoint.getX()+1,LastPoint.getY());
+						Point p = new Point(LastPoint.getX(),LastPoint.getY()+1);
 						Penultimate = LastPoint;
 						LastPoint = p;
 						return p;
 					}
 					if(direction == 3){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
+						Point p = new Point(LastPoint.getX()+1,LastPoint.getY());
 						Penultimate = LastPoint;
 						LastPoint = p;
 						return p;
 					}
 					if(direction ==4){
-						Point p = new Point(LastPoint.getX()-1,LastPoint.getY());
+						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
 						Penultimate = LastPoint;
 						LastPoint = p;
 						return p;					
 					}
 				}
 			}
-			else if(G.checkHit(Penultimate)){
+			else if(Penultimate.getID()!=0 ){
 				direction++;
-				int id=Penultimate.getID();
-				boolean sunk=P.getShip(id-2).sunk();
+
+				boolean sunk=P.testSunk(Penultimate);
 				if(sunk){
 					Point p = SelectRandom();
 					Penultimate = LastPoint;
 					LastPoint = p;
+					//P.attack(p);
 					return p;
 				}
 				else{
 					if(direction == 2){
-						Point p = new Point(LastPoint.getX()+1,LastPoint.getY());
+						Point p = new Point(LastPoint.getX(),LastPoint.getY()+1);
 						Penultimate = LastPoint;
 						LastPoint = p;
+						//P.attack(p);
 						return p;
 					}
 					if(direction == 3){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
-						Penultimate = LastPoint;
-						LastPoint = p;
-						return p;
-					}
-					if(direction ==4){
 						Point p = new Point(LastPoint.getX()-1,LastPoint.getY());
 						Penultimate = LastPoint;
 						LastPoint = p;
+						//P.attack(p);
+						return p;
+					}
+					if(direction ==4){
+
+						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
+						Penultimate = LastPoint;
+						LastPoint = p;
+						//P.attack(p);
 						return p;					
 					}
 				}
@@ -124,30 +129,38 @@ public class Targeting {
 
 	}
 
-
+	private Point getEmptyPoint() {
+		Point p = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
+		while(p.getID()!=0) {
+			p = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
+		}
+		return p;
+		
+	}
 	private Point SelectRandom(){
 		Point a = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
 		while(G.checkGuessed(a)==true){
-			a = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
-			/*	if(G.checkHit(a)){
-				direction = 1;
-			}
-			else{
-				direction = 0;
-			}*/
-
+			a = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));	
+		}
+		if((a).getID()!=0){
+			direction = 1;
+		}
+		else{
+			direction = 0;
 		}
 
+		Penultimate = LastPoint;
+		LastPoint = a;
 		return a;
 
 	}
 	private ArrayList<Point > stealEverything(int kys){
-		ArrayList<Point> aalokisgay=new ArrayList<Point>();
+		ArrayList<Point> rohanisanigger=new ArrayList<Point>();
 		for(int i=0; i<G.getAllPoints().length;i++) {
 
 			for(int j=0;j<G.getAllPoints().length;j++) {
 				if(G.getPoint(i, j).getID()==kys) {
-					aalokisgay.add(G.getPoint(i, j));
+					rohanisanigger.add(G.getPoint(i, j));
 				}
 
 
@@ -155,7 +168,7 @@ public class Targeting {
 
 
 		}
-		return aalokisgay;
+		return rohanisanigger;
 
 
 
@@ -263,7 +276,7 @@ public class Targeting {
 
 
 		return null;
-		
+
 	}
 }
 
