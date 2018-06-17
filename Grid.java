@@ -27,7 +27,7 @@ public class Grid {
 
 
 	public void placeShip(int row1, int column1, int row2, int column2, Ship s) throws Exception{
-		if(row1>=LENGTH || row1<0 ||row2>=LENGTH || row2<0 ||column1>=LENGTH ||column1<0 || column2>=LENGTH||column2<0){
+		if(row1>LENGTH || row1<0 ||row2>LENGTH || row2<0 ||column1>LENGTH ||column1<0 || column2>LENGTH||column2<0){
 
 			throw new Exception("Enter valid coordinates to place ship");
 
