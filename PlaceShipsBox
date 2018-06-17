@@ -45,11 +45,40 @@ public class PlaceShipsBox extends GBFrame {
 		
 		
 		if(b == done);
-			
 				try {
+					// .... check placement exception
 					p.getGrid().placeShip(row1Coordinate.getNumber()-1, col1Coordinate.getNumber()-1, row2Coordinate.getNumber()-1, col2Coordinate.getNumber()-1, new Ship(shipNum));
 
-				
+					// START
+					// Update grid background color for placed ships
+/*					if(row1Coordinate == row2Coordinate) {
+						for(int i = col1Coordinate.getNumber()-1; i < col2Coordinate.getNumber()-1; i++) {
+							System.out.println("Inside if, for loop ");
+
+							Board.arrayButtons[row1Coordinate.getNumber()-1][i].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
+						}
+						
+					}else {
+						for(int i = row1Coordinate.getNumber()-1; i < row2Coordinate.getNumber()-1; i++) {
+							System.out.println("Inside else, for loop ");
+
+							Board.arrayButtons[i][col1Coordinate.getNumber()-1].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
+						}
+					}
+*/					// END
+					
+					int rowStart = row1Coordinate.getNumber()-1;
+					int colStart = col1Coordinate.getNumber()-1;
+					int rowEnd = row2Coordinate.getNumber();
+					int colEnd = col2Coordinate.getNumber();
+					
+					
+					for (int i = rowStart; i < rowEnd; i++) {
+						for (int j = colStart; j < colEnd; j++) {
+							
+							Board.arrayButtons[i+1][j+1].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
+						}
+					}				
 				} catch (Exception e) {
 					e.printStackTrace();
 					messageBox(e.getMessage());
