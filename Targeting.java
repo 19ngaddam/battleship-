@@ -6,7 +6,7 @@ public class Targeting {
 	private int difficulty;
 	private Player player;
 	private Grid grid;
-	//Impossible mode
+	//Impossible mode asdasd
 	private ArrayList<Point> two;
 	private ArrayList<Point> three;
 	private ArrayList<Point> four;
