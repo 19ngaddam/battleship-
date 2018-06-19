@@ -186,7 +186,13 @@ public class Computer {
 		
 		
 		int id=compboard.getPoint(x, y).getID();
+		
+		if(id<2) {
+			return false;
+		}
+		else {
 		return ships[id-2].sunk();
+		}
 	}
 
 }
