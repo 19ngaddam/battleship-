@@ -20,18 +20,21 @@ public class Player {
 		playerboard=new Grid();
 	}
 
-
+	public Player(Player copy) {
+		playerboard=copy.getGrid();
+		ships=copy.getAllShips();
+	}
 	public void attack(int x, int y) throws Exception{
 
 		playerboard.attack(x, y);
 		int i=playerboard.getPoint(x, y).getID();
 		ships[i-1].hitShip();
-		if(ships[i-1].sunk()==true){
+		/*if(ships[i-1].sunk()==true){
 
 			Board.sGUI.messageBox(ships[i-1].getName()+" has been sunk!");
 		}
 
-
+*/
 	}
 	public void attack(Point p) throws Exception{
 		int x=p.getX();
@@ -40,10 +43,10 @@ public class Player {
 		int i=playerboard.getPoint(x, y).getID();
 		if(playerboard.getPoint(x, y).getID() != 0) {
 			this.getShip(i).hitShip();
-			if(this.getShip(i).sunk()==true){
+			/*if(this.getShip(i).sunk()==true){
 
 				Board.sGUI.messageBox("Your " + this.getShip(i).getName()+" has been sunk!");
-			}
+			}*/
 		}
 
 
@@ -80,5 +83,31 @@ public class Player {
 		int id=playerboard.getPoint(x, y).getID();
 		return ships[id-2].sunk();
 	}
+	public Point getPoint(Point p) {
+		int x=p.getX();
+		int y=p.getY();
+		
+		return playerboard.getPoint(x, y);
+		
+		
+		
+	}
+	public Ship[] getAllShips() {
+		return ships;
+	}
+	public boolean testSunk(Point p) {
 
+		int x=p.getX();
+		int y=p.getY();
+				
+
+
+		int id=playerboard.getPoint(x, y).getID();
+		if(id<2) {
+			return false;
+		}
+		else {
+		return ships[id-2].sunk();
+		}
+	}
 }
