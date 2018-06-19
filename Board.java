@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -17,10 +19,12 @@ public class Board extends GBFrame{
 	static ControlPanel cGUI;
 	static Player p;
 	static Targeting t;
+	private static String loseSound = "C://Users/Admin/workspace-SCHOOL/Battleship/Resources/losesound.wav"; 
+	private static URL loseSoundURL;
 	
 	public Board(){
 		p = new Player();
-	
+		loseSoundURL = getClass().getResource(loseSound);
 		cGUI = new ControlPanel(p);
 		for(int i =1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
@@ -29,8 +33,8 @@ public class Board extends GBFrame{
 
 				b =  addButton("", i, j, 1, 1);
 
-				b.setIcon(new ImageIcon("src/img.jpg"));
-
+				b.setIcon(new ImageIcon("Resources/img.jpg"));
+				b.setToolTipText("(" + i + ", " + j + ")");
 				arrayButtons[i][j] = b;
 
 			}
@@ -39,36 +43,16 @@ public class Board extends GBFrame{
 	}
 
 	/*	public static void displayShips(int row1, int column1, int row2, int column2) {
-
 		if(row1==row2){
-
-
 			for(int i=Math.min(column1, column2);i<=Math.max(column1, column2);i++){
-
 				arrayButtons[row1][i].setBackground(Color.BLACK);
-
 			}
-
-
-
 		}
 		else if(column1==column2){
-
-
 			for(int i=Math.min(row1, row2);i<=Math.max(row1, row2);i++){
-
 				arrayButtons[i][column1].setBackground(Color.BLACK);
-
 			}
-
-
-
 		}
-
-
-
-
-
 	}*/
 	
 	public void buttonClicked(JButton b) {
@@ -117,19 +101,19 @@ public class Board extends GBFrame{
 					arrayButtons[i][j].setBackground(Color.BLACK);
 					int shipAtPoint =p.getGrid().getPoint(i-1, j-1).getID(); 
 					if(shipAtPoint == 2){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/dest.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/dest.jpg"));
 
 					}else if(shipAtPoint ==3 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/sub.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/sub.jpg"));
 
 					}else if(shipAtPoint == 4 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/batt.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/batt.jpg"));
 
 					}else if(shipAtPoint == 5 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/carr.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/carr.jpg"));
 
 					}else if(shipAtPoint == 6 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/upb.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/upb.jpg"));
 
 					}else{
 						arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
@@ -143,7 +127,7 @@ public class Board extends GBFrame{
 					arrayButtons[i][j].setBackground(Color.WHITE);
 				}
 				if(p.getGrid().getPoint(i-1, j-1).getHit()) {
-					arrayButtons[i][j].setIcon(new ImageIcon("src/img2.jpg"));
+					arrayButtons[i][j].setIcon(new ImageIcon("Resources/img2.jpg"));
 					
 					if(p.gg()) {
 						JOptionPane.showMessageDialog(null,"You have LOST!! Better luck next time!");
@@ -159,7 +143,7 @@ public class Board extends GBFrame{
 
 
 	}
-	public static void updateGUI() {
+	public static void updateGUI() throws Exception {
 
 
 		for(int i =1; i < arrayButtons.length; i++){
@@ -168,19 +152,19 @@ public class Board extends GBFrame{
 					arrayButtons[i][j].setBackground(Color.BLACK);
 					int shipAtPoint =p.getGrid().getPoint(i-1, j-1).getID(); 
 					if(shipAtPoint == 2){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/dest.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/dest.jpg"));
 
 					}else if(shipAtPoint ==3 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/sub.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/sub.jpg"));
 
 					}else if(shipAtPoint == 4 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/batt.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/batt.jpg"));
 
 					}else if(shipAtPoint == 5 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/carr.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/carr.jpg"));
 
 					}else if(shipAtPoint == 6 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("src/upb.jpg"));
+						arrayButtons[i][j].setIcon(new ImageIcon("Resources/upb.jpg"));
 
 					}else{
 						arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
@@ -194,10 +178,13 @@ public class Board extends GBFrame{
 					arrayButtons[i][j].setBackground(Color.WHITE);
 				}
 				if(p.getGrid().getPoint(i-1, j-1).getHit()) {
-					arrayButtons[i][j].setIcon(new ImageIcon("src/img2.jpg"));
+					arrayButtons[i][j].setIcon(new ImageIcon("Resources/img2.jpg"));
 					
 					if(p.gg()) {
+						SecondaryGUI.play(loseSoundURL);
+						TimeUnit.SECONDS.sleep(2);
 						JOptionPane.showMessageDialog(null,"You have LOST!! Better luck next time!");
+						
 						System.exit(0);
 					}
 
