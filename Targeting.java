@@ -1,27 +1,26 @@
 import java.util.ArrayList;
 
 public class Targeting {
-
+	private ArrayList<Point> guesses;
 	private int direction; 
-	private Point LastPoint;
-	private Point Penultimate;
 	private int difficulty;
-	private Player P;
-	private Grid G;
+	private Player player;
+	private Grid grid;
 	//Impossible mode
 	private ArrayList<Point> two;
 	private ArrayList<Point> three;
 	private ArrayList<Point> four;
 	private ArrayList<Point> five;
 	private ArrayList<Point> six;
+	private Point hitPoint;
 	private int idtofind;
 	public Targeting(int dif, Player p){
 		idtofind=2;
-		P = p;
-		G = p.getGrid();
-		LastPoint = getEmptyPoint();
-		Penultimate = getEmptyPoint();
+		player = p;
+		grid = player.getGrid();
 		difficulty = dif;
+
+		guesses = new ArrayList<Point>();
 
 		two=stealEverything(2);
 		three=stealEverything(3);
@@ -30,96 +29,218 @@ public class Targeting {
 		six=stealEverything(6);
 
 	}
-	public Point getNext(){
+	public Point getNext() throws Exception{
 		if(difficulty ==1){
 			Point p = SelectRandom();
-			Penultimate = LastPoint;
-			LastPoint = p;
+			//player.attack(p);
 			return p;
 
 		}
 		else if(difficulty == 2){
-			if((LastPoint).getID()!=0){
-				System.out.println("Hit");
-				boolean sunk=P.testSunk(LastPoint);
-				if(sunk){
+			try {
+				if(guesses.isEmpty()){
 					Point p = SelectRandom();
-					Penultimate = LastPoint;
-					LastPoint = p;
+					guesses.add(p);
+					//player.attack(p);
 					return p;
 				}
-				else{
-					//Check out of bounds exception
-					if(direction == 1){
-						Point p = new Point(LastPoint.getX()-1,LastPoint.getY());
-						Penultimate = LastPoint;
-						LastPoint = p;
+				if(guesses.get(guesses.size()-1).getID()!=0){
+
+					if(player.testSunk(guesses.get(guesses.size()-1))){
+
+						Point p = SelectRandom();
+
+						//player.attack(p);
+
+
+						guesses.add(player.getPoint(p));
+
 						return p;
+
 					}
-					if(direction == 2){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()+1);
-						Penultimate = LastPoint;
-						LastPoint = p;
-						return p;
-					}
-					if(direction == 3){
-						Point p = new Point(LastPoint.getX()+1,LastPoint.getY());
-						Penultimate = LastPoint;
-						LastPoint = p;
-						return p;
-					}
-					if(direction ==4){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
-						Penultimate = LastPoint;
-						LastPoint = p;
-						return p;					
+					else{
+
+						//Check out of bounds exception
+						if(direction == 1){
+
+							if(guesses.get(guesses.size()-1).getX()==0){
+								direction++;
+							}
+							else{
+
+								Point p = new Point(guesses.get(guesses.size()-1).getX()-1,guesses.get(guesses.size()-1).getY());
+
+								//player.attack(p);
+
+								guesses.add(player.getPoint(p));
+						
+								return p;
+							}
+						}
+						if(direction == 2){
+							if(guesses.get(guesses.size()-1).getY()==9){
+								direction++;
+							}
+							else{
+								Point p = new Point(guesses.get(guesses.size()-1).getX(),guesses.get(guesses.size()-1).getY()+1);
+
+								//player.attack(p);
+							
+								guesses.add(player.getPoint(p));
+								return p;
+							}
+						}
+						if(direction == 3){
+							if(guesses.get(guesses.size()-1).getX()==9){
+								direction++;
+							}
+							else{
+								Point p = new Point(guesses.get(guesses.size()-1).getX()+1,guesses.get(guesses.size()-1).getY());
+
+								//player.attack(p);
+						
+								guesses.add(player.getPoint(p));
+								return p;
+							}
+						}
+						if(direction ==4){
+							if(guesses.get(guesses.size()-1).getY()==0){
+								direction=1;
+							}
+							else{
+								Point p = new Point(guesses.get(guesses.size()-1).getX(),guesses.get(guesses.size()-1).getY()-1);
+
+								//player.attack(p);
+							
+								guesses.add(player.getPoint(p));
+
+								return p;
+							}
+
+						}
 					}
 				}
-			}
-			else if(Penultimate.getID()!=0 ){
-				direction++;
-
-				boolean sunk=P.testSunk(Penultimate);
-				if(sunk){
+				else if(guesses.size()==1){
 					Point p = SelectRandom();
-					Penultimate = LastPoint;
-					LastPoint = p;
-					//P.attack(p);
+
+					//	player.attack(p);
+
+					guesses.add(player.getPoint(p));
 					return p;
 				}
-				else{
-					if(direction == 2){
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()+1);
-						Penultimate = LastPoint;
-						LastPoint = p;
-						//P.attack(p);
-						return p;
-					}
-					if(direction == 3){
-						Point p = new Point(LastPoint.getX()-1,LastPoint.getY());
-						Penultimate = LastPoint;
-						LastPoint = p;
-						//P.attack(p);
-						return p;
-					}
-					if(direction ==4){
+				else if(guesses.get(guesses.size()-2).getID()!=0){
+					if(player.testSunk(guesses.get(guesses.size()-2))){
+						Point p = SelectRandom();
 
-						Point p = new Point(LastPoint.getX(),LastPoint.getY()-1);
-						Penultimate = LastPoint;
-						LastPoint = p;
-						//P.attack(p);
-						return p;					
+						//player.attack(p);
+
+						guesses.add(player.getPoint(p));
+						return p;
+
 					}
+
+					else if(guesses.get(guesses.size()-3).getID()==guesses.get(guesses.size()-2).getID()){
+						if(direction ==1){
+							direction = 3;
+							Point p = new Point(hitPoint.getX()+1,hitPoint.getY());
+
+							//	player.attack(p);
+						
+							guesses.add(player.getPoint(p));
+							return p;	
+						}
+						if(direction ==2){
+							direction = 4;
+							Point p = new Point(hitPoint.getX(),hitPoint.getY()-1);
+							//	player.attack(p);
+						
+							guesses.add(player.getPoint(p));
+							return p;
+
+						}
+						if(direction ==3){
+							direction = 1;
+							Point p = new Point(hitPoint.getX()-1,hitPoint.getY());
+							//player.attack(p);
+						
+							guesses.add(player.getPoint(p));
+							return p;
+
+						}
+						if(direction ==4){
+							direction = 2;
+							Point p = new Point(hitPoint.getX(),hitPoint.getY()+1);
+
+							//player.attack(p);
+							
+							guesses.add(player.getPoint(p));
+							return p;
+
+						}			
+					}
+					else{
+						direction++;
+						if(direction == 2){
+							if(guesses.get(guesses.size()-1).getY()==9){
+								direction++;
+							}
+							else{
+								Point p = new Point(hitPoint.getX(),hitPoint.getY()+1);
+
+								//player.attack(p);
+						
+								guesses.add(player.getPoint(p));
+								return p;
+							}
+						}
+						if(direction == 3){
+							if(guesses.get(guesses.size()-1).getX()==9){
+								direction++;
+							}
+							else{
+								Point p = new Point(hitPoint.getX()+1,hitPoint.getY());
+
+								//player.attack(p);
+					
+								guesses.add(player.getPoint(p));
+								return p;
+							}
+						}
+						if(direction ==4){
+							if(guesses.get(guesses.size()-1).getY()==0){
+								direction = 1;
+							}
+							else{
+								Point p = new Point(hitPoint.getX(),hitPoint.getY()+1);
+
+								//player.attack(p);
+					
+								guesses.add(player.getPoint(p));
+								return p;
+							}
+
+						}
+					}
+
 				}
+				else{
+					Point p = SelectRandom();
+
+					//player.attack(p);
+
+					guesses.add(player.getPoint(p));
+					return p;
+
+				}
+
+
+			}
+			catch(Exception e) {
+				return SelectRandom();
 			}
 
-			else{
-				Point p = SelectRandom();
-				Penultimate = LastPoint;
-				LastPoint = p;
-				return p;
-			}
 		}
+
 		else {
 			//ROHAN
 
@@ -135,32 +256,32 @@ public class Targeting {
 			p = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
 		}
 		return p;
-		
+
 	}
 	private Point SelectRandom(){
 		Point a = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));
-		while(G.checkGuessed(a)==true){
+		while(player.getGrid().checkGuessed(a)==true){
 			a = new Point((int)Math.round(Math.random()*9),(int)Math.round(Math.random()*9));	
 		}
-		if((a).getID()!=0){
+
+		if((player.getPoint(a).getID()!=0)){
+			hitPoint = a;
 			direction = 1;
 		}
 		else{
 			direction = 0;
 		}
 
-		Penultimate = LastPoint;
-		LastPoint = a;
 		return a;
 
 	}
 	private ArrayList<Point > stealEverything(int kys){
-		ArrayList<Point> rohanisanigger=new ArrayList<Point>();
-		for(int i=0; i<G.getAllPoints().length;i++) {
+		ArrayList<Point> lol=new ArrayList<Point>();
+		for(int i=0; i<grid.getAllPoints().length;i++) {
 
-			for(int j=0;j<G.getAllPoints().length;j++) {
-				if(G.getPoint(i, j).getID()==kys) {
-					rohanisanigger.add(G.getPoint(i, j));
+			for(int j=0;j<grid.getAllPoints().length;j++) {
+				if(grid.getPoint(i, j).getID()==kys) {
+					lol.add(grid.getPoint(i, j));
 				}
 
 
@@ -168,7 +289,7 @@ public class Targeting {
 
 
 		}
-		return rohanisanigger;
+		return lol;
 
 
 
@@ -185,7 +306,7 @@ public class Targeting {
 			}
 			return temp;
 		}
-//.
+		//.
 		else if(idtofind==3) {
 
 			Point temp=three.get(0);
@@ -235,48 +356,10 @@ public class Targeting {
 
 		}
 
-		/*	for(int i=cheatpoint.getX();i<G.getAllPoints().length;i++) {
-			for(int j=cheatpoint.getY();j<G.getAllPoints().length;j++ ) {
-				Point pt=G.getPoint(i, j);
-				if(pt.getID()==idtofind) {
-					if(pt.getY()==9) {
-						cheatpoint = new Point(0,pt.getX()+1);
-					}
-					else {
-						cheatpoint = new Point(pt.getX(),pt.getY()+1);
-					}
-
-
-
-					return pt;
-				}
-			}
-		}
-
-
-
-		cheatpoint=new Point(0,0);
-		idtofind++;
-		for(int i=cheatpoint.getX();i<G.getAllPoints().length;i++) {
-			for(int j=cheatpoint.getY();j<G.getAllPoints().length;j++ ) {
-				Point pt=G.getPoint(i, j);
-				if(pt.getID()==idtofind) {
-					if(pt.getY()==9) {
-						cheatpoint = new Point(pt.getX()+1,0);
-					}
-					else {
-						cheatpoint = new Point(pt.getX(),pt.getY()+1);
-					}
-
-					return pt;
-				}
-			}
-		}*/
-
-
 
 		return null;
 
 	}
 }
+
 
