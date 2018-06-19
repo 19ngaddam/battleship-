@@ -1,222 +1,143 @@
 import BreezySwing.*;
-import java.awt.*;
 
-import java.awt.Color;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
-import javax.swing.border.*;
+public class SecondaryGUI extends GBFrame {
 
-import javax.swing.*;
-
-public class Board extends GBFrame{
 	static JButton [][] arrayButtons = new JButton[11][11];
-	static SecondaryGUI sGUI = new SecondaryGUI();
-	static ControlPanel cGUI;
-	static Player p;
-	static Targeting t;
-	private static String loseSound = "C://Users/Admin/workspace-SCHOOL/Battleship/Resources/losesound.wav"; 
-	private static URL loseSoundURL;
+	Computer cpu;
+	private String hitSound = "C://Users/Admin/workspace-SCHOOL/Battleship/Resources/hitsound.wav";
+	private String missSound = "C://Users/Admin/workspace-SCHOOL/Battleship/Resources/misssound.wav";
+	private String winSound = "C://Users/Admin/workspace-SCHOOL/Battleship/Resources/winSound.wav";
+
+	URL hitSoundURL, missSoundURL, winSoundURL;
 	
-	public Board(){
-		p = new Player();
-		loseSoundURL = getClass().getResource(loseSound);
-		cGUI = new ControlPanel(p);
-		for(int i =1; i < arrayButtons.length; i++){
+	public SecondaryGUI() {
+
+		for(int i = 1; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
 				JButton b = new JButton();
 
 
 				b =  addButton("", i, j, 1, 1);
-
-				b.setIcon(new ImageIcon("Resources/img.jpg"));
+				b.setIcon(new ImageIcon( new BufferedImage(299, 168, BufferedImage.TYPE_INT_ARGB)));
+				b.setBackground(Color.BLUE);
 				b.setToolTipText("(" + i + ", " + j + ")");
 				arrayButtons[i][j] = b;
 
+				// arrayButtons[i][j].setEnabled(false);
+				hitSoundURL = getClass().getResource("C://Users/Admin/workspace-SCHOOL/Battleship/Resources/hitsound.wav");
+				missSoundURL = getClass().getResource("C://Users/Admin/workspace-SCHOOL/Battleship/Resources/misssound.wav");
+				winSoundURL = getClass().getResource("C://Users/Admin/workspace-SCHOOL/Battleship/Resources/winSound.wav");
+						
 			}
+
 		}
 
-	}
-
-	/*	public static void displayShips(int row1, int column1, int row2, int column2) {
-		if(row1==row2){
-			for(int i=Math.min(column1, column2);i<=Math.max(column1, column2);i++){
-				arrayButtons[row1][i].setBackground(Color.BLACK);
-			}
-		}
-		else if(column1==column2){
-			for(int i=Math.min(row1, row2);i<=Math.max(row1, row2);i++){
-				arrayButtons[i][column1].setBackground(Color.BLACK);
-			}
-		}
-	}*/
-	
-	public void buttonClicked(JButton b) {
-		/*for(int i =1; i < arrayButtons.length; i++){
-			for(int j = 1; j < arrayButtons[0].length; j++){
-				if(p.getGrid().getPoint(i-1, j-1).getHit() && b == arrayButtons[i][j]) {
-					arrayButtons[i][j].setBackground(Color.red);
-				}
-				}
-			}*/
-	}
-	public static void setTargeting(int dif,Player p) {
-		
-		
-		t=new Targeting(dif,p);
-		
-	}
-	public static void guess() {
-		
-	
-		
 		try {
-			Point pt=t.getNext();
-			System.out.println("x " +pt.getX() +" y " +pt.getY());
-			p.attack(pt);
-			
-			if(p.testSunk(pt)) {
-
-				Board.sGUI.messageBox("Your " + p.getShip(p.getPoint(pt).getID()).getName()+" has been sunk!");
-			}
+			cpu=new Computer();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			messageBox(e.getMessage());
 		}
-	
-	
+
+
 	}
-	public static void updateGUI(Player player) {
 
-
-		p=player;
-
-		for(int i =1; i < arrayButtons.length; i++){
+	public void buttonClicked(JButton b){
+		for(int i =0; i < arrayButtons.length; i++){
 			for(int j = 1; j < arrayButtons[0].length; j++){
-				if(p.getGrid().getPoint(i-1, j-1).getID()!=0) {
-					arrayButtons[i][j].setBackground(Color.BLACK);
-					int shipAtPoint =p.getGrid().getPoint(i-1, j-1).getID(); 
-					if(shipAtPoint == 2){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/dest.jpg"));
 
-					}else if(shipAtPoint ==3 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/sub.jpg"));
+				JButton temp;
+				if(arrayButtons[i][j]==b){
 
-					}else if(shipAtPoint == 4 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/batt.jpg"));
-
-					}else if(shipAtPoint == 5 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/carr.jpg"));
-
-					}else if(shipAtPoint == 6 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/upb.jpg"));
-
-					}else{
-						arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
-					}
+					temp=b;
 
 
 
-				}
-				if(p.getGrid().getPoint(i-1, j-1).isGuessed()) {
-					arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
-					arrayButtons[i][j].setBackground(Color.WHITE);
-				}
-				if(p.getGrid().getPoint(i-1, j-1).getHit()) {
-					arrayButtons[i][j].setIcon(new ImageIcon("Resources/img2.jpg"));
-					
-					if(p.gg()) {
-						JOptionPane.showMessageDialog(null,"You have LOST!! Better luck next time!");
-						System.exit(0);
-					}
 
-					
-					}
-
-			}
-		}
-		
+					try {
+						cpu.getGrid().attack(i-1, j-1);
 
 
-	}
-	public static void updateGUI() throws Exception {
+						if(cpu.getGrid().checkHit(i-1, j-1)){
+							//messageBox(""+cpu.getGrid().getPoint(i-1, j-1).getID());
+							temp.setBackground(Color.RED);
+							cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()).hitShip();
+							play(hitSoundURL);
+							if(cpu.testSunk(i-1,j-1)) {
+								messageBox("You have sunk the enemy's " + cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()).getName());
+								if(cpu.gg()) {
 
+									play(winSoundURL);
+									messageBox("You have won!! Victory Royale!!");
+									
+									TimeUnit.SECONDS.sleep(2);
+									System.exit(0);
+								}
 
-		for(int i =1; i < arrayButtons.length; i++){
-			for(int j = 1; j < arrayButtons[0].length; j++){
-				if(p.getGrid().getPoint(i-1, j-1).getID()!=0) {
-					arrayButtons[i][j].setBackground(Color.BLACK);
-					int shipAtPoint =p.getGrid().getPoint(i-1, j-1).getID(); 
-					if(shipAtPoint == 2){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/dest.jpg"));
+							}
 
-					}else if(shipAtPoint ==3 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/sub.jpg"));
+						}
 
-					}else if(shipAtPoint == 4 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/batt.jpg"));
+						else{
+							temp.setBackground(Color.WHITE);
+							play(missSoundURL);
+						}
+						Board.guess();
+						Board.updateGUI();
 
-					}else if(shipAtPoint == 5 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/carr.jpg"));
-
-					}else if(shipAtPoint == 6 ){
-						arrayButtons[i][j].setIcon(new ImageIcon("Resources/upb.jpg"));
-
-					}else{
-						arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage (299, 168, BufferedImage.TYPE_INT_ARGB)));
-					}
-
-
-
-				}
-				if(p.getGrid().getPoint(i-1, j-1).isGuessed()) {
-					arrayButtons[i][j].setIcon(new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
-					arrayButtons[i][j].setBackground(Color.WHITE);
-				}
-				if(p.getGrid().getPoint(i-1, j-1).getHit()) {
-					arrayButtons[i][j].setIcon(new ImageIcon("Resources/img2.jpg"));
-					
-					if(p.gg()) {
-						SecondaryGUI.play(loseSoundURL);
-						TimeUnit.SECONDS.sleep(2);
-						JOptionPane.showMessageDialog(null,"You have LOST!! Better luck next time!");
-						
-						System.exit(0);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						messageBox(e.getMessage());
 					}
 
 					
-					}
+				}
 
-			}
-		}
-		
+			}}
 
 
-	}
 
-	/**
-	 * Main Method
-	 *
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		Board GUI = new Board();
-		sGUI.setSize(400, 400);
-		sGUI.setVisible(true);
-		GUI.setSize(600, 600);
-		GUI.setVisible(true);
-		cGUI.setSize(250, 100);
-		cGUI.setVisible(true);
-		cGUI.setLocation(470, 200);
-		GUI.setLocation(0, 395);
-		sGUI.setLocation(80,0);
+
 
 
 
 	}
+	public JButton [][] getArrayButtons(){
+		return arrayButtons;
+	}
+
+
+
+
+
+	public static void play(URL filename)
+	  {
+	      try
+	      {
+	          Clip clip = AudioSystem.getClip();
+	          clip.open(AudioSystem.getAudioInputStream(filename));
+	          clip.start();
+	          TimeUnit.SECONDS.sleep(2);
+	      }
+	      catch (Exception exc)
+	      {
+	          exc.printStackTrace(System.out);
+	      }
+	  }
+
+
+
+
 
 }
