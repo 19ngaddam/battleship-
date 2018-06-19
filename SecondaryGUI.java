@@ -26,7 +26,7 @@ public class SecondaryGUI extends GBFrame {
 			}
 
 		}
-	
+
 		try {
 			cpu=new Computer();
 		} catch (Exception e) {
@@ -52,8 +52,8 @@ public class SecondaryGUI extends GBFrame {
 
 					try {
 						cpu.getGrid().attack(i-1, j-1);
-					
-				
+
+
 						if(cpu.getGrid().checkHit(i-1, j-1)){
 							//messageBox(""+cpu.getGrid().getPoint(i-1, j-1).getID());
 							temp.setBackground(Color.RED);
@@ -61,26 +61,31 @@ public class SecondaryGUI extends GBFrame {
 							if(cpu.testSunk(i-1,j-1)) {
 								messageBox("You have sunk the enemy's " + cpu.getShip(cpu.getGrid().getPoint(i-1, j-1).getID()).getName());
 								if(cpu.gg()) {
-									
+
 									messageBox("You have won!! Victory Royale!!");
 									System.exit(0);
 								}
+
 							}
+
 						}
+
 						else{
 							temp.setBackground(Color.WHITE);
 						}
 						Board.guess();
+						Board.updateGUI();
+
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						messageBox(e.getMessage());
 					}
+
 					
 				}
-			}
 
-		}
+			}}
 
 
 
