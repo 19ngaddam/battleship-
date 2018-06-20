@@ -66,9 +66,7 @@ public class Targeting {
 
 							if(guesses.get(guesses.size()-1).getX()==0){
 								direction++;
-								if(guesses.get(guesses.size()-1).getY()==9){
-									direction++;
-								}
+								
 							}
 							else{
 
@@ -87,9 +85,7 @@ public class Targeting {
 						if(direction == 2){
 							if(guesses.get(guesses.size()-1).getY()==9){
 								direction++;
-								if(guesses.get(guesses.size()-1).getX()==9){
-									direction++;
-								}
+								
 							}
 							else{
 								Point p = new Point(guesses.get(guesses.size()-1).getX(),guesses.get(guesses.size()-1).getY()+1);
@@ -106,9 +102,7 @@ public class Targeting {
 						if(direction == 3){
 							if(guesses.get(guesses.size()-1).getX()==9){
 								direction++;
-								if(guesses.get(guesses.size()-1).getY()==0){
-									direction++;
-								}
+								
 							}
 							else{
 								Point p = new Point(guesses.get(guesses.size()-1).getX()+1,guesses.get(guesses.size()-1).getY());
